@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 
 # Initialize the Dash app with suppress_callback_exceptions=True
 app = dash.Dash(__name__, suppress_callback_exceptions=True)
-
+server = app.server
 # Define the layout of the dashboard
 app.layout = html.Div([
     html.H1("Delirium Dashboard"),  # Header
