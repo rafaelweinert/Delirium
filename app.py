@@ -12,6 +12,20 @@ import plotly.graph_objs as go
 import joblib
 from plotly.subplots import make_subplots
 
+def generate_table(dataframe, max_rows=10):
+    return html.Table([
+        html.Thead(
+            html.Tr([html.Th(str(col), style={'border-right': '1px solid lightgrey'}) for col in dataframe.columns])
+        ),
+        html.Tbody([
+            html.Tr([
+                html.Td(str(dataframe.iloc[i][col]), style={'border-right': '1px solid lightgrey'}) for col in dataframe.columns
+            ]) for i in range(min(len(dataframe), max_rows))
+        ])
+    ], style={'whiteSpace': 'pre-wrap'})
+
+
+
 
 
 # Initialize logging
@@ -97,7 +111,13 @@ def parse_uploaded_data(data):
         scroll_needed = len(feature_options) > 15
         
         return html.Div([
+            
+            html.H3(children='Overview of your data'),
+            html.Div(generate_table(decoded_df), 
+                     style = {'maxWidth' : '1000px', 'overflowX': 'scroll'}),
+            html.Br(),
             # Display feature checkbox list with scroll if needed
+            html.H3('Select features for ML model'),
             html.Div(
                 dcc.Checklist(
                     id='features-checkbox',
